@@ -1,4 +1,4 @@
-package br.ufpb.dcx.lima.albiere.fK_Money.inventario;
+package br.ufpb.dcx.lima.albiere.fK_Money.inventory;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -10,7 +10,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class SingleInventory {

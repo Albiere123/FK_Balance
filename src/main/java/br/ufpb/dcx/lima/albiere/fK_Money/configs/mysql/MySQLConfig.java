@@ -1,4 +1,4 @@
-package br.ufpb.dcx.lima.albiere.fK_Money.configs;
+package br.ufpb.dcx.lima.albiere.fK_Money.configs.mysql;
 
 import br.ufpb.dcx.lima.albiere.fK_Money.FK_Balance;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.PlayerEconomy;

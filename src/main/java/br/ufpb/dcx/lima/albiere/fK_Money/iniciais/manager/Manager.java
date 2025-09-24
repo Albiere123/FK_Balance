@@ -1,6 +1,6 @@
 package br.ufpb.dcx.lima.albiere.fK_Money.iniciais.manager;
 
-import br.ufpb.dcx.lima.albiere.fK_Money.configs.MySQLConfig;
+import br.ufpb.dcx.lima.albiere.fK_Money.configs.mysql.MySQLConfig;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.PlayerEconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

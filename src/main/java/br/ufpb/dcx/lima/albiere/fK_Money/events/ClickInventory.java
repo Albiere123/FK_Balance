@@ -1,7 +1,7 @@
-package br.ufpb.dcx.lima.albiere.fK_Money.eventos;
+package br.ufpb.dcx.lima.albiere.fK_Money.events;
 
 import br.ufpb.dcx.lima.albiere.fK_Money.FK_Balance;
-import br.ufpb.dcx.lima.albiere.fK_Money.inventario.SingleInventory;
+import br.ufpb.dcx.lima.albiere.fK_Money.inventory.SingleInventory;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

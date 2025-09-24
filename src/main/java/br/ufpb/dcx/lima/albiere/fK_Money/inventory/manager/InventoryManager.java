@@ -1,7 +1,8 @@
-package br.ufpb.dcx.lima.albiere.fK_Money.inventario;
+package br.ufpb.dcx.lima.albiere.fK_Money.inventory.manager;
 
 import br.ufpb.dcx.lima.albiere.fK_Money.exceptions.InventoryExistsException;
 import br.ufpb.dcx.lima.albiere.fK_Money.exceptions.InventoryNotExists;
+import br.ufpb.dcx.lima.albiere.fK_Money.inventory.SingleInventory;
 
 import java.util.HashMap;
 import java.util.Map;

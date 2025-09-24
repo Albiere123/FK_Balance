@@ -2,12 +2,12 @@ package br.ufpb.dcx.lima.albiere.fK_Money;
 
 import br.ufpb.dcx.lima.albiere.fK_Money.configs.Config;
 import br.ufpb.dcx.lima.albiere.fK_Money.configs.Functions;
-import br.ufpb.dcx.lima.albiere.fK_Money.eventos.ClickInventory;
-import br.ufpb.dcx.lima.albiere.fK_Money.eventos.IO;
+import br.ufpb.dcx.lima.albiere.fK_Money.events.ClickInventory;
+import br.ufpb.dcx.lima.albiere.fK_Money.events.IO;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.manager.Manager;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.manager.ManagerInterface;
-import br.ufpb.dcx.lima.albiere.fK_Money.inventario.InventoryManager;
-import br.ufpb.dcx.lima.albiere.fK_Money.inventario.SingleInventory;
+import br.ufpb.dcx.lima.albiere.fK_Money.inventory.manager.InventoryManager;
+import br.ufpb.dcx.lima.albiere.fK_Money.inventory.SingleInventory;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Material;

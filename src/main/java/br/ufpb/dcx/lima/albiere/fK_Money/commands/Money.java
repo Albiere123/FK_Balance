@@ -4,7 +4,7 @@ import br.ufpb.dcx.lima.albiere.fK_Money.FK_Balance;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.PlayerEconomy;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.PlayerCustom;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.manager.Manager;
-import br.ufpb.dcx.lima.albiere.fK_Money.inventario.SingleInventory;
+import br.ufpb.dcx.lima.albiere.fK_Money.inventory.SingleInventory;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;

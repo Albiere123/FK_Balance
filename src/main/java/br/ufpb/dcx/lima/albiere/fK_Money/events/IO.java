@@ -1,4 +1,4 @@
-package br.ufpb.dcx.lima.albiere.fK_Money.eventos;
+package br.ufpb.dcx.lima.albiere.fK_Money.events;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
