@@ -27,7 +27,6 @@ public final class FK_Balance extends JavaPlugin {
 
     private static Config configM;
     private static FileConfiguration options;
-    // ALTERAÇÃO 2: A variável agora é do tipo EconomyManager
     private static Manager economyManager;
     private static FileConfiguration moneyOptions;
     private static Functions op;
@@ -153,11 +152,10 @@ public final class FK_Balance extends JavaPlugin {
     }
 
     public void startLoop() {
-        long autosaveInterval = 20L * 60L * 10L; // 10 minutos
+        long autosaveInterval = 20L * 60L * 10L;
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
             getLogger().info("Salvando dados da economia automaticamente...");
-            // ALTERAÇÃO 7: Usar o novo método de salvamento
             getEconomyManager().saveAllPlayersBalance();
             getLogger().info("Dados salvos com sucesso!");
 
@@ -165,8 +163,6 @@ public final class FK_Balance extends JavaPlugin {
     }
 
     public void registerAPI() {
-        // A API registrada agora é a implementação do EconomyManager
-        // Certifique-se que sua classe EconomyManager implementa a interface ManagerInterface
         getServer().getServicesManager().register(
                 ManagerInterface.class,
                 economyManager,
