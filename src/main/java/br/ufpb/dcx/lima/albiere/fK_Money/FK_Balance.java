@@ -7,7 +7,7 @@ import br.ufpb.dcx.lima.albiere.fK_Money.events.IO;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.manager.Manager;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.manager.ManagerInterface;
 import br.ufpb.dcx.lima.albiere.fK_Money.inventory.manager.InventoryManager;
-import br.ufpb.dcx.lima.albiere.fK_Money.inventory.SingleInventory;
+import br.ufpb.dcx.lima.albiere.fK_Money.inventory.SimpleInventory;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Material;
@@ -204,7 +204,7 @@ public final class FK_Balance extends JavaPlugin {
             inventoryManager.InventoryCreate("topMoney"+p.getUniqueId(), Objects.requireNonNull(options.getString("essential.moneyTop.Title")), 5);
         }
 
-        SingleInventory inventory = inventoryManager.getInventory("topMoney"+p.getUniqueId());
+        SimpleInventory inventory = inventoryManager.getInventory("topMoney"+p.getUniqueId());
 
         List<Player> rank = economyManager.getTopMoney();
 
@@ -227,7 +227,7 @@ public final class FK_Balance extends JavaPlugin {
             inventoryManager.InventoryCreate("topCash" + p.getUniqueId(), Objects.requireNonNull(options.getString("essential.cashTop.Title")), 5);
         }
 
-        SingleInventory inventory = inventoryManager.getInventory("topCash" + p.getUniqueId());
+        SimpleInventory inventory = inventoryManager.getInventory("topCash" + p.getUniqueId());
 
         List<Player> rank = economyManager.getTopCash();
 

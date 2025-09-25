@@ -12,19 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SingleInventory {
+public class PagedInventory implements InventoryModuleInteface{
     private final String title;
     private final int rows;
     private final Inventory inventory;
     private final String id;
 
-    public SingleInventory(String id, String title, int rows) {
+    public PagedInventory(String id, String title, int rows) {
         this.title = title;
         this.rows = rows;
         this.id = id;
         inventory = Bukkit.createInventory(null, this.rows*9, this.title);
     }
 
+
+    @Override
+    public String getType() {
+        return "paged";
+    }
 
     public void open(Player p) {
         p.openInventory(inventory);

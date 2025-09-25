@@ -1,7 +1,7 @@
 package br.ufpb.dcx.lima.albiere.fK_Money.events;
 
 import br.ufpb.dcx.lima.albiere.fK_Money.FK_Balance;
-import br.ufpb.dcx.lima.albiere.fK_Money.inventory.SingleInventory;
+import br.ufpb.dcx.lima.albiere.fK_Money.inventory.SimpleInventory;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +18,7 @@ public class ClickInventory implements Listener {
         if(FK_Balance.getManager().inventoryExists(e.getView().getTitle())) {
             e.setCancelled(true);
             if(e.getView().getTitle().equals(Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.Title")).replaceAll("&", "§"))) {
-                SingleInventory inventory = FK_Balance.getManager().getInventory("topMoney"+e.getWhoClicked().getUniqueId());
+                SimpleInventory inventory = FK_Balance.getManager().getInventory("topMoney"+e.getWhoClicked().getUniqueId());
                 List<Player> rank = FK_Balance.getEconomyManager().getTopMoney();
                 switch (e.getSlot()) {
                     case 26:
