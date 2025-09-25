@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SimpleInventory implements InventoryModuleInteface{
+public class SimpleInventory implements InventoryModuleInterface {
     private final String title;
     private final int rows;
     private final Inventory inventory;

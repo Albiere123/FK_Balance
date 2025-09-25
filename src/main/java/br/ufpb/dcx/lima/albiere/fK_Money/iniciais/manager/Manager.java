@@ -3,6 +3,7 @@ package br.ufpb.dcx.lima.albiere.fK_Money.iniciais.manager;
 import br.ufpb.dcx.lima.albiere.fK_Money.configs.mysql.MySQLConfig;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.PlayerEconomy;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class Manager implements ManagerInterface{
     private final MySQLConfig mySQLConfig;
-    private Map<UUID, PlayerEconomy> playerBalances; // Não é final, pois será substituído ao carregar do DB
+    private Map<UUID, PlayerEconomy> playerBalances;
 
 
     public Manager() {
@@ -114,31 +115,29 @@ public class Manager implements ManagerInterface{
     }
 
 
-    public List<Player> getTopMoney() {
+    public List<OfflinePlayer> getTopMoney() {
         List<Map.Entry<UUID, PlayerEconomy>> sortedList = new ArrayList<>(playerBalances.entrySet());
         sortedList.sort((a, b) -> b.getValue().getMoney().compareTo(a.getValue().getMoney()));
         return sortedList.stream()
-                .map(entry -> Bukkit.getPlayer(entry.getKey()))
-                .filter(Objects::nonNull)
+                .map(entry -> Bukkit.getOfflinePlayer(entry.getKey()))
                 .collect(Collectors.toList());
     }
 
     public int getYTopMoney(Player player) {
-        List<Player> topPlayers = getTopMoney();
+        List<OfflinePlayer> topPlayers = getTopMoney();
         return topPlayers.indexOf(player) + 1;
     }
 
-    public List<Player> getTopCash() {
+    public List<OfflinePlayer> getTopCash() {
         List<Map.Entry<UUID, PlayerEconomy>> sortedList = new ArrayList<>(playerBalances.entrySet());
         sortedList.sort((a, b) -> b.getValue().getCash().compareTo(a.getValue().getCash()));
         return sortedList.stream()
-                .map(entry -> Bukkit.getPlayer(entry.getKey()))
-                .filter(Objects::nonNull)
+                .map(entry -> Bukkit.getOfflinePlayer(entry.getKey()))
                 .collect(Collectors.toList());
     }
 
     public int getYTopCash(Player player) {
-        List<Player> topPlayers = getTopMoney();
+        List<OfflinePlayer> topPlayers = getTopMoney();
         return topPlayers.indexOf(player) + 1;
     }
 }

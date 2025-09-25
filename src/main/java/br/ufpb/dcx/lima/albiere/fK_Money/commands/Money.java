@@ -4,6 +4,7 @@ import br.ufpb.dcx.lima.albiere.fK_Money.FK_Balance;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.PlayerEconomy;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.PlayerCustom;
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.manager.Manager;
+import br.ufpb.dcx.lima.albiere.fK_Money.inventory.InventoryModuleInterface;
 import br.ufpb.dcx.lima.albiere.fK_Money.inventory.SimpleInventory;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
@@ -168,8 +169,7 @@ public class Money extends BaseCommand {
     @Subcommand("top")
     @CommandAlias("rank")
     public void onTop(CommandSender sender) {
-        FK_Balance.loadTopMoney((Player) sender);
-        SimpleInventory inventory = FK_Balance.getManager().getInventory("topMoney"+((Player) sender).getUniqueId());
+        InventoryModuleInterface inventory = FK_Balance.loadTopMoney(0);
 
         int rankUser = FK_Balance.getEconomyManager().getYTopMoney((Player) sender);
         String name = Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.Name")).replaceAll("\\{Rank}", String.valueOf(rankUser)).replaceAll("\\{Player}", sender.getName());

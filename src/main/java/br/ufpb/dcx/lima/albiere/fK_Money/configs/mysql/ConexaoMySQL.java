@@ -14,7 +14,6 @@ public class ConexaoMySQL {
     private static final String USUARIO = FK_Balance.getOptions().getConfig().getString("sql.user");
     private static final String SENHA = FK_Balance.getOptions().getConfig().getString("sql.password");
 
-    // Método para obter uma nova conexão com o banco de dados
     public static Connection getConexao() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

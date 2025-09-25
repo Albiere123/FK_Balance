@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PagedInventory implements InventoryModuleInteface{
+public class PagedInventory implements InventoryModuleInterface {
     private final String title;
     private final int rows;
     private final Inventory inventory;

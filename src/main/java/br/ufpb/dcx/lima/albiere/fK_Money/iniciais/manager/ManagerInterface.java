@@ -1,6 +1,7 @@
 package br.ufpb.dcx.lima.albiere.fK_Money.iniciais.manager;
 
 import br.ufpb.dcx.lima.albiere.fK_Money.iniciais.PlayerEconomy;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
@@ -19,6 +20,6 @@ public interface ManagerInterface {
     void adicionarMoney(Player user, BigDecimal money);
     void setMoney(Player user, BigDecimal money);
     List<PlayerEconomy> listarUsuarios(Player user);
-    List<Player> getTopMoney();
+    List<OfflinePlayer> getTopMoney();
     int getYTopMoney(Player player);
 }

@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.UUID;
 
-public interface InventoryModuleInteface {
+public interface InventoryModuleInterface {
 
     String getType();
     void open(Player p);

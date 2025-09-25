@@ -1,14 +1,9 @@
 package br.ufpb.dcx.lima.albiere.fK_Money.inventory.manager;
 
-import br.ufpb.dcx.lima.albiere.fK_Money.inventory.SimpleInventory;
+import br.ufpb.dcx.lima.albiere.fK_Money.inventory.InventoryModuleInterface;
 
 public interface InventoryInterface {
 
-    void InventoryCreate(String id, String title, int rows);
-    SimpleInventory getInventory(String id);
+    InventoryModuleInterface createInventory(String id, String title, int rows, InventoryTypes type);
 
-    boolean inventoryExists(String title, String id);
-
-    void setInventory();
-    boolean inventoryExists(String id);
 }
