@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class InventoryClickPaginedEvent implements Listener {
 
@@ -38,7 +37,7 @@ public class InventoryClickPaginedEvent implements Listener {
                 List<String> nextLore = FK_Balance.getOptions().getConfig().getStringList("essential.moneyTop.item_nextAndPrevious.NextLore")
                         .stream()
                         .map(s -> s.replaceAll("&", "§"))
-                        .collect(Collectors.toList());
+                        .toList();
                 if(e.getCurrentItem().getItemMeta().getLore() == nextLore) {
                     ((Inventory) e.getView()).clear();
                     InventoryModuleInterface inventory = FK_Balance.loadTopMoney(1);
