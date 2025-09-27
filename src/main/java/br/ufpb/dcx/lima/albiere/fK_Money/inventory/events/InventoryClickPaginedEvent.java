@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +25,7 @@ public class InventoryClickPaginedEvent implements Listener {
 
         String inventoryTitle = e.getView().getTitle();
         String topMoneyTitle = Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.Title")).replaceAll("&", "§");
+        String topCashTitle = Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.cashTop.Title")).replaceAll("&", "§");
         if(topMoneyTitle.equals(inventoryTitle)) {
             if (e.getCurrentItem() == null) {
                 return;
@@ -44,7 +46,7 @@ public class InventoryClickPaginedEvent implements Listener {
                     int rankUser = FK_Balance.getEconomyManager().getYTopMoney(player);
                     name = Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.Name")).replaceAll("\\{Rank}", String.valueOf(rankUser)).replaceAll("\\{Player}", player.getName());
                     List<String> lore = Objects.requireNonNull(FK_Balance.getOptions().getConfig().getStringList("essential.moneyTop.Lore"));
-                    lore.replaceAll(s -> s.replaceAll("\\{Money}", String.valueOf(FK_Balance.getEconomyManager().getPlayerBalance((player).getUniqueId()).getMoney())));
+                    lore.replaceAll(s -> s.replaceAll("\\{Money}", String.valueOf(new BigDecimal(String.valueOf(FK_Balance.getEconomyManager().getPlayerBalance((player).getUniqueId()).getMoney())))));
                     assert inventory != null;
                     inventory.addPlayerHead(4, 1, name, lore, (player).getUniqueId());
 
@@ -53,7 +55,33 @@ public class InventoryClickPaginedEvent implements Listener {
 
                 }
             }
+        } else if(topCashTitle.equals(inventoryTitle)) {
+            if (e.getCurrentItem() == null) {
+                return;
             }
+            e.setCancelled(
+                    true
+            );
+            Material a = Material.getMaterial(FK_Balance.getOptions().getConfig().getString("essential.cashTop.item_nextAndPrevious.Type"));
+            String name = Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.cashTop.item_nextAndPrevious.NextName")).replaceAll("&", "§");
+            if (e.getCurrentItem().getType() == a && Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName().equals(name)) {
+                List<String> nextLore = FK_Balance.getOptions().getConfig().getStringList("essential.cashTop.item_nextAndPrevious.NextLore")
+                        .stream()
+                        .map(s -> s.replaceAll("&", "§"))
+                        .toList();
+                if (e.getCurrentItem().getItemMeta().getLore() == nextLore) {
+                    ((Inventory) e.getView()).clear();
+                    InventoryModuleInterface inventory = FK_Balance.loadTopCash(1);
+                    int rankUser = FK_Balance.getEconomyManager().getYTopCash(player);
+                    name = Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.cashTop.Name")).replaceAll("\\{Rank}", String.valueOf(rankUser)).replaceAll("\\{Player}", player.getName());
+                    List<String> lore = Objects.requireNonNull(FK_Balance.getOptions().getConfig().getStringList("essential.cashTop.Lore"));
+                    lore.replaceAll(s -> s.replaceAll("\\{Cash}", String.valueOf(new BigDecimal(String.valueOf(FK_Balance.getEconomyManager().getPlayerBalance((player).getUniqueId()).getCash())))));
+                    assert inventory != null;
+                    inventory.addPlayerHead(4, 1, name, lore, (player).getUniqueId());
 
-    }
+                }
+
+            }
+        }
+        }
 }

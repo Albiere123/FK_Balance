@@ -1,5 +1,6 @@
 package br.ufpb.dcx.lima.albiere.fK_Money.inventory;
 
+import br.ufpb.dcx.lima.albiere.fK_Money.FK_Balance;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,19 +11,53 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class PagedInventory implements InventoryModuleInterface {
     private final String title;
     private final int rows;
     private final Inventory inventory;
     private final String id;
+    private int index = 0;
+    private final int max_index;
 
-    public PagedInventory(String id, String title, int rows) {
+    public int getIndex() {
+        return index;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public int getMax_index() {
+        return max_index;
+    }
+
+    public List<String> getNextLore(){
+        return FK_Balance.getOptions().getConfig().getStringList("essential.cashTop.item_nextAndPrevious.NextLore")
+                .stream()
+                .map(s -> s.replaceAll("&", "§"))
+                .toList();
+    }
+
+    public List<String> getPreviousLore() {
+        List<String> lore1 = FK_Balance.getOptions().getConfig().getStringList("essential.moneyTop.item_nextAndPrevious.PreviousLore");
+        lore1.replaceAll(s -> s.replaceAll("&", "§"));
+        return lore1;
+    }
+    public PagedInventory(String id, String title, int rows, int max_index) {
         this.title = title;
         this.rows = rows;
         this.id = id;
+        this.max_index = max_index;
         inventory = Bukkit.createInventory(null, this.rows*9, this.title);
+        addItem(26,
+                Material.getMaterial(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.item_nextAndPrevious.Type")),
+                1,
+                Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.item_nextAndPrevious.NextName")).replaceAll("&", "§"),
+                getNextLore());
     }
 
 
@@ -89,6 +124,25 @@ public class PagedInventory implements InventoryModuleInterface {
 
     public void clear(int index) {
         inventory.clear(index);
+    }
+
+
+    public void nextPage() {
+        this.index+=1;
+        if(index > max_index) return;
+        clear();
+
+        if(index < max_index) {
+
+            addItem(26,
+                    Material.getMaterial(FK_Balance.getOptions().getConfig().getString("essential.cashTop.item_nextAndPrevious.Type")),
+                    1,
+                    Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.cashTop.item_nextAndPrevious.NextName")).replaceAll("&", "§"),
+                    getNextLore());
+        }
+        if(index > 0) {
+            addItem(18, Material.getMaterial(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.item_nextAndPrevious.Type")), 1, Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.item_nextAndPrevious.PreviousName")).replaceAll("&", "§"), getPreviousLore());
+        }
     }
 
 }

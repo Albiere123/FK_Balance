@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
+import static br.ufpb.dcx.lima.albiere.fK_Money.commands.Money.bigDecimaltoString;
+
 @CommandAlias("Cash|Points")
 public class Cash extends BaseCommand {
 
@@ -28,7 +30,7 @@ public class Cash extends BaseCommand {
         PlayerCustom p = new PlayerCustom((Player) sender);
         PlayerEconomy ecoPlayer = ecoManager.getPlayerBalance(arg1 != null ? arg1.getPlayer().getUniqueId() : ((Player) sender).getUniqueId());
         if(arg1 != null && arg1.getPlayer().getUniqueId() != ((Player) sender).getUniqueId()) p.sendColouredMessage(prefix + "&e"+arg1.getPlayer().getName()+ " &fpossue &eR$ " + ecoPlayer.getCash() + "&f.");
-        else p.sendColouredMessage(prefix + "Você possue &e" + ecoPlayer.getCash() + "&f de cash.");
+        else p.sendColouredMessage(prefix + "Você possue &e" + bigDecimaltoString(String.valueOf(ecoPlayer.getCash())) + "&f de cash.");
 
     }
 
@@ -78,7 +80,7 @@ public class Cash extends BaseCommand {
         ecoManager.transferirCash(p.getPlayer().getUniqueId(), destiny.getPlayer().getUniqueId(), money);
 
         p.sendColouredMessage(prefix + "Transação enviada.");
-        destiny.sendColouredMessage(prefix + "Você recebeu &e" + money + "&f de cash, remetente: &e" + p.getPlayer().getName());
+        destiny.sendColouredMessage(prefix + "Você recebeu &e" + bigDecimaltoString(String.valueOf(money)) + "&f de cash, remetente: &e" + p.getPlayer().getName());
 
     }
 
@@ -103,7 +105,7 @@ public class Cash extends BaseCommand {
 
         BigDecimal money;
         try {
-            money = new BigDecimal(arg2);//.replace(arg1.getPlayer().getName()+" ", ""));
+            money = new BigDecimal(arg2);
         } catch (NumberFormatException e) {
             p.sendColouredMessage(prefix + "Insira Apenas Números!");
             return;
@@ -117,10 +119,10 @@ public class Cash extends BaseCommand {
 
         FK_Balance.getEconomyManager().adicionarCash(arg1.getPlayer(), money);
         if (Objects.requireNonNull(arg1).getPlayer().getUniqueId() == ((Player) sender).getUniqueId()) {
-            p.sendColouredMessage(prefix + "Adicionado &e" + money + "&f de cash a &esua &fconta.");
+            p.sendColouredMessage(prefix + "Adicionado &e" + bigDecimaltoString(String.valueOf(money)) + "&f de cash a &esua &fconta.");
         } else {
-            p.sendColouredMessage(prefix + "Adicionado &eR$ " + money + "&f de cash a conta de &e" + arg1.getPlayer().getName() + "&f.");
-            (new PlayerCustom(arg1.getPlayer())).sendColouredMessage(prefix + "O staff &e" + sender.getName() + " &fadicionou &e" + money + " &f de cash a sua conta.");
+            p.sendColouredMessage(prefix + "Adicionado &eR$ " + bigDecimaltoString(String.valueOf(money)) + "&f de cash a conta de &e" + arg1.getPlayer().getName() + "&f.");
+            (new PlayerCustom(arg1.getPlayer())).sendColouredMessage(prefix + "O staff &e" + sender.getName() + " &fadicionou &e" + bigDecimaltoString(String.valueOf(money)) + " &f de cash a sua conta.");
         }
     }
 
@@ -145,7 +147,7 @@ public class Cash extends BaseCommand {
         BigDecimal money;
         try {
 
-            money = new BigDecimal(arg2);//.replace(arg1.getPlayer().getName()+" ", ""));
+            money = new BigDecimal(arg2);
         } catch (NumberFormatException e) {
             p.sendColouredMessage(prefix + "Insira Apenas Números!");
             return;
@@ -159,10 +161,10 @@ public class Cash extends BaseCommand {
 
         FK_Balance.getEconomyManager().setCash(arg1.getPlayer(), money);
         if (arg1.getPlayer().getUniqueId() == ((Player) sender).getUniqueId()) {
-            p.sendColouredMessage(prefix + "Novo saldo da sua conta é &e" + money + "&f de cash.");
+            p.sendColouredMessage(prefix + "Novo saldo da sua conta é &e" + bigDecimaltoString(String.valueOf(money)) + "&f de cash.");
         } else {
-            p.sendColouredMessage(prefix + "Novo saldo da conta do jogador &e" + arg1.getPlayer().getName() + " &fé &e" + money + "&f de cash.");
-            (new PlayerCustom(arg1.getPlayer())).sendColouredMessage(prefix + "O staff &e" + sender.getName() + " &fdeterminou o valor da sua conta para &e" + money + "&f de cash.");
+            p.sendColouredMessage(prefix + "Novo saldo da conta do jogador &e" + arg1.getPlayer().getName() + " &fé &e" + bigDecimaltoString(String.valueOf(money)) + "&f de cash.");
+            (new PlayerCustom(arg1.getPlayer())).sendColouredMessage(prefix + "O staff &e" + sender.getName() + " &fdeterminou o valor da sua conta para &e" + bigDecimaltoString(String.valueOf(money)) + "&f de cash.");
         }
     }
 
@@ -174,7 +176,7 @@ public class Cash extends BaseCommand {
         int rankUser = FK_Balance.getEconomyManager().getYTopCash((Player) sender);
         String name = Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.cashTop.Name")).replaceAll("\\{Rank}", String.valueOf(rankUser)).replaceAll("\\{Player}", sender.getName());
         List<String> lore = Objects.requireNonNull(FK_Balance.getOptions().getConfig().getStringList("essential.cashTop.Lore"));
-        lore.replaceAll(s -> s.replaceAll("\\{Cash}", String.valueOf(FK_Balance.getEconomyManager().getPlayerBalance(((Player) sender).getUniqueId()).getCash())));
+        lore.replaceAll(s -> s.replaceAll("\\{Cash}", bigDecimaltoString(String.valueOf(FK_Balance.getEconomyManager().getPlayerBalance(((Player) sender).getUniqueId()).getCash()))));
         inventory.addPlayerHead(4, 1, name, lore, ((Player) sender).getUniqueId());
 
 

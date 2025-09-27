@@ -1,5 +1,6 @@
 package br.ufpb.dcx.lima.albiere.fK_Money;
 
+import br.ufpb.dcx.lima.albiere.fK_Money.commands.Money;
 import br.ufpb.dcx.lima.albiere.fK_Money.configs.Config;
 import br.ufpb.dcx.lima.albiere.fK_Money.configs.Functions;
 import br.ufpb.dcx.lima.albiere.fK_Money.events.IO;
@@ -16,6 +17,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -60,7 +63,7 @@ public final class FK_Balance extends JavaPlugin {
             configM.saveConfig("options");
         }
         if (!options.contains("essential.moneyTop.Title")) {
-            options.set("essential.moneyTop.Title", "&6&l          Money TOP");
+            options.set("essential.moneyTop.Title", "&a&l          Money TOP");
             configM.saveConfig("options");
         }
         if (!options.contains("essential.moneyTop.Name")) {
@@ -93,24 +96,41 @@ public final class FK_Balance extends JavaPlugin {
             options.set("sql.password", "");
             configM.saveConfig("options");
         }
-        if (!options.contains("essential.moneyTop.item_nextAndPrevious.Type")) {
-            options.set("essential.moneyTop.item_nextAndPrevious.Type", "ARROW");
+
+        if (!options.contains("essential.cashTop.Title")) {
+            options.set("essential.cashTop.Title", "&6&l          Cash TOP");
             configM.saveConfig("options");
         }
-        if (!options.contains("essential.moneyTop.item_nextAndPrevious.PreviousName")) {
-            options.set("essential.moneyTop.item_nextAndPrevious.PreviousName", "Página Anterior");
+
+        if (!options.contains("essential.cashTop.Name")) {
+            options.set("essential.cashTop.Name", "&e{Rank}. {Player}");
             configM.saveConfig("options");
         }
-        if (!options.contains("essential.moneyTop.item_nextAndPrevious.PreviousLore")) {
-            options.set("essential.moneyTop.item_nextAndPrevious.PreviousLore", List.of(""));
+        if (!options.contains("essential.cashTop.Lore")) {
+            List<String> lore = (new ArrayList<>());
+            lore.add("&6{Cash}");
+            options.set("essential.cashTop.Lore", lore);
             configM.saveConfig("options");
         }
-        if (!options.contains("essential.moneyTop.item_nextAndPrevious.NextName")) {
-            options.set("essential.moneyTop.item_nextAndPrevious.NextName", "Próxima Página");
+
+        if (!options.contains("essential.cashTop.item_nextAndPrevious.Type")) {
+            options.set("essential.cashTop.item_nextAndPrevious.Type", "ARROW");
             configM.saveConfig("options");
         }
-        if (!options.contains("essential.moneyTop.item_nextAndPrevious.NextLore")) {
-            options.set("essential.moneyTop.item_nextAndPrevious.NextLore", List.of(""));
+        if (!options.contains("essential.cashTop.item_nextAndPrevious.PreviousName")) {
+            options.set("essential.cashTop.item_nextAndPrevious.PreviousName", "Página Anterior");
+            configM.saveConfig("options");
+        }
+        if (!options.contains("essential.cashTop.item_nextAndPrevious.PreviousLore")) {
+            options.set("essential.cashTop.item_nextAndPrevious.PreviousLore", List.of(""));
+            configM.saveConfig("options");
+        }
+        if (!options.contains("essential.cashTop.item_nextAndPrevious.NextName")) {
+            options.set("essential.cashTop.item_nextAndPrevious.NextName", "Próxima Página");
+            configM.saveConfig("options");
+        }
+        if (!options.contains("essential.cashTop.item_nextAndPrevious.NextLore")) {
+            options.set("essential.cashTop.item_nextAndPrevious.NextLore", List.of(""));
             configM.saveConfig("options");
         }
     }
@@ -131,8 +151,8 @@ public final class FK_Balance extends JavaPlugin {
         return economyManager;
     }
 
-    public void loadConfig() {
-        configM = new Config(this);
+    public static void loadConfig() {
+        configM = new Config(getPls());
         configM.loadConfig("options");
         configM.loadConfig("balanceOptions");
         options = configM.getConfig("options");
@@ -205,28 +225,11 @@ public final class FK_Balance extends JavaPlugin {
                 "topMoney",
                 Objects.requireNonNull(options.getString("essential.moneyTop.Title")),
                 5,
-                InventoryTypes.PAGED
+                InventoryTypes.PAGED, 2
         );
         if(inventory == null) return null;
         List<OfflinePlayer> rank = economyManager.getTopMoney();
 
-        List<String> nextLore = options.getStringList("essential.moneyTop.item_nextAndPrevious.NextLore")
-                .stream()
-                .map(s -> s.replaceAll("&", "§"))
-                .collect(Collectors.toList());
-
-        List<String> lore1 = FK_Balance.getOptions().getConfig().getStringList("essential.moneyTop.item_nextAndPrevious.PreviousLore");
-        lore1.replaceAll(s -> s.replaceAll("&", "§"));
-
-        if (index == 0) {
-            inventory.addItem(26,
-                    Material.getMaterial(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.item_nextAndPrevious.Type")),
-                    1,
-                    Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.item_nextAndPrevious.NextName")).replaceAll("&", "§"),
-                    nextLore);
-        } else {
-            inventory.addItem(18, Material.getMaterial(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.item_nextAndPrevious.Type")), 1, Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.item_nextAndPrevious.PreviousName")).replaceAll("&", "§"), lore1);
-        }
         if(index > rank.size()) return null;
         for (int i = index; i < rank.size(); i++) {
             OfflinePlayer rankedPlayer = rank.get(i);
@@ -237,7 +240,7 @@ public final class FK_Balance extends JavaPlugin {
 
             List<String> finalLore = options.getStringList("essential.moneyTop.Lore")
                     .stream()
-                    .map(s -> s.replaceAll("\\{Money}", String.valueOf(economyManager.getPlayerBalance(rankedPlayer.getUniqueId()).getMoney())))
+                    .map(s -> s.replaceAll("\\{Money}", Money.bigDecimaltoString(String.valueOf(new BigDecimal(String.valueOf(economyManager.getPlayerBalance(rankedPlayer.getUniqueId()).getMoney()))))))
                     .collect(Collectors.toList());
 
             inventory.addPlayerHead((index==1 ?i-14 : i) <= 25 ? (index==1 ?i-14 : i)  + 19 : (index==1 ?i-14 : i) + 21, 1, name, finalLore, rankedPlayer.getUniqueId());
@@ -252,28 +255,10 @@ public final class FK_Balance extends JavaPlugin {
                 "topCash",
                 Objects.requireNonNull(options.getString("essential.cashTop.Title")),
                 5,
-                InventoryTypes.PAGED
+                InventoryTypes.PAGED, 2
         );
 
         List<OfflinePlayer> rank = economyManager.getTopCash();
-
-        List<String> nextLore = FK_Balance.getOptions().getConfig().getStringList("essential.cashTop.item_nextAndPrevious.NextLore")
-                .stream()
-                .map(s -> s.replaceAll("&", "§"))
-                .collect(Collectors.toList());
-
-        List<String> lore1 = FK_Balance.getOptions().getConfig().getStringList("essential.moneyTop.item_nextAndPrevious.PreviousLore");
-        lore1.replaceAll(s -> s.replaceAll("&", "§"));
-
-        if (index == 0) {
-            inventory.addItem(26,
-                    Material.getMaterial(FK_Balance.getOptions().getConfig().getString("essential.cashTop.item_nextAndPrevious.Type")),
-                    1,
-                    Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.cashTop.item_nextAndPrevious.NextName")).replaceAll("&", "§"),
-                    nextLore);
-        } else {
-            inventory.addItem(18, Material.getMaterial(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.item_nextAndPrevious.Type")), 1, Objects.requireNonNull(FK_Balance.getOptions().getConfig().getString("essential.moneyTop.item_nextAndPrevious.PreviousName")).replaceAll("&", "§"), lore1);
-        }
 
         if(index > rank.size()) return null;
         for (int i = index; i < rank.size(); i++) {
@@ -285,7 +270,7 @@ public final class FK_Balance extends JavaPlugin {
 
             List<String> finalLore = options.getStringList("essential.cashTop.Lore")
                     .stream()
-                    .map(s -> s.replaceAll("\\{Money}", String.valueOf(economyManager.getPlayerBalance(rankedPlayer.getUniqueId()).getCash())))
+                    .map(s -> s.replaceAll("\\{Cash}", Money.bigDecimaltoString(String.valueOf(new BigDecimal(String.valueOf(economyManager.getPlayerBalance(rankedPlayer.getUniqueId()).getCash()))))))
                     .collect(Collectors.toList());
 
             inventory.addPlayerHead((index==1 ?i-14 : i) <= 25 ? (index==1 ?i-14 : i)  + 19 : (index==1 ?i-14 : i) + 21, 1, name, finalLore, rankedPlayer.getUniqueId());
